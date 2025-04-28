@@ -31,6 +31,31 @@ app.post('/newblog', async (req, res) => {
     return res.status(500).json({ message: 'Internal server error' });
   }
 });
+app.get('/getBlog', async (req, res) => {
+
+  try {
+    const { data, error } = await supabase
+      .from('blog')
+      .select('*')
+    if (error) {
+      console.log(error);
+      return res.status(400).json({ message: 'Blog not created' });
+    }
+    if (data.length === 0) {
+      return res.status(400).json({ message: 'No blog found' });
+    }
+    else {
+      return  res.status(200).json({Alldata:data})
+    }
+
+    return res.status(200).json({ message: 'Blog created' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
